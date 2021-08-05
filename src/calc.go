@@ -11,15 +11,13 @@ import (
 	"strings"
 
 	"github.com/thoas/go-funk"
+
+	"github.com/now-coding/mahjong-riich-success/domain"
 )
 
 const (
 	GAME_TYPE_HUMAN = 0x0001
 	GAME_TYPE_THREE = 0x0010
-)
-
-const (
-	YAKU_RIICH = "1"
 )
 
 func main() {
@@ -31,46 +29,32 @@ func main() {
 	riichSuccessCount := 0
 
 	for _, file := range files {
-		log := getLogText(file)
+		log := getLog(file)
 
-		riichCount += getRiichCount(log)
-		riichSuccessCount += getRiichSuccessCount(log)
+		riichCount += log.GetRiichCount()
+		riichSuccessCount += log.GetRiichSuccessCount()
 	}
 
-	fmt.Println(riichCount, riichSuccessCount)
+	fmt.Printf("リーチ回数: %d\n", riichCount)
+	fmt.Printf("リーチ成功回数: %d\n", riichSuccessCount)
+	fmt.Printf("リーチ成功率: %.2f\n", float64(riichSuccessCount)/float64(riichCount)*100)
 }
 
-func getRiichCount(log string) int {
-	// リーチ時にロンされなかった場合のみ`step="2"`が記録される
-	r := regexp.MustCompile(`REACH[^>]*?step="2"/>`)
-	matches := r.FindAllString(log, -1)
-	return len(matches)
-}
-
-func getRiichSuccessCount(log string) int {
-	count := 0
-	r := regexp.MustCompile(`<AGARI[^>]*? yaku="([\d,]+)"`)
-	for _, matches := range r.FindAllStringSubmatch(log, -1) {
-		if len(matches) > 0 {
-			// [役A,役Aの飜数,役B,役Bの飜数,...]
-			for i, yaku := range strings.Split(matches[1], ",") {
-				if i%2 == 0 && yaku == YAKU_RIICH {
-					count += 1
-				}
-			}
-		}
-	}
-
-	return count
-}
-
-func getLogText(file string) string {
+func getLog(file string) domain.MJLog {
 	body, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return string(body)
+	filename := filepath.Base(file)
+	r := regexp.MustCompile(`([\w\-]+)(&tw=([\d]))?`)
+	matches := r.FindStringSubmatch(filename)
+
+	return domain.MJLog{
+		ID:         matches[1],
+		MyPosition: matches[3],
+		Body:       string(body),
+	}
 }
 
 func getFiles(id string) []string {
