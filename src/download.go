@@ -2,10 +2,12 @@ package main
 
 import (
 	"compress/gzip"
+	"flag"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
 	"time"
 
@@ -13,6 +15,17 @@ import (
 )
 
 func main() {
+	flag.Parse()
+	id := flag.Arg(0)
+
+	if id == "" {
+		byAll()
+	} else {
+		byPlayerID(id)
+	}
+}
+
+func byAll() {
 	files := getLogFiles()
 
 	for _, file := range files {
@@ -20,14 +33,30 @@ func main() {
 		ids := getMJLogIDs(html)
 
 		for _, id := range ids {
-			downloadMJLog(id)
+			downloadMJLog(id, "")
 			time.Sleep(time.Millisecond * 500)
 		}
 	}
 }
 
-func downloadMJLog(id string) {
-	file := "../mjlogs/" + id + ".mjlog"
+func byPlayerID(playerID string) {
+	html := getLogsHTMLByPlayerID(playerID)
+	ids := getMJLogIDs(html)
+
+	for _, id := range ids {
+		downloadMJLog(id, playerID)
+		time.Sleep(time.Millisecond * 500)
+	}
+}
+
+func downloadMJLog(id string, playerID string) {
+	var file string
+	if playerID == "" {
+		file = "../mjlogs/" + id + ".mjlog"
+	} else {
+		file = "../mjlogs/" + playerID + "/" + id + ".mjlog"
+		os.MkdirAll(filepath.Dir(file), 0755)
+	}
 
 	_, err := os.Stat(file)
 	if !os.IsNotExist(err) {
@@ -46,7 +75,11 @@ func downloadMJLog(id string) {
 		log.Fatal(err)
 	}
 
-	ioutil.WriteFile(file, body, 0666)
+	err = ioutil.WriteFile(file, body, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Printf("%s is downloaded", file)
 }
 
@@ -80,6 +113,20 @@ func getLogsHTML(file string) *goquery.Document {
 	}
 
 	doc, err := goquery.NewDocumentFromReader(reader)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return doc
+}
+
+func getLogsHTMLByPlayerID(playerID string) *goquery.Document {
+	res, err := http.Get("https://tenhou.net/0/log/find.cgi?un=" + playerID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	doc, err := goquery.NewDocumentFromResponse(res)
 	if err != nil {
 		log.Fatal(err)
 	}
