@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -22,7 +23,10 @@ const (
 )
 
 func main() {
-	files := getFiles()
+	flag.Parse()
+	id := flag.Arg(0)
+
+	files := getFiles(id)
 	riichCount := 0
 	riichSuccessCount := 0
 
@@ -69,10 +73,15 @@ func getLogText(file string) string {
 	return string(body)
 }
 
-func getFiles() []string {
-	files := []string{}
+func getFiles(id string) []string {
+	var files []string
+	var err error
 
-	files, err := filepath.Glob("../mjlogs/*.mjlog")
+	if id == "" {
+		files, err = filepath.Glob("../mjlogs/*.mjlog")
+	} else {
+		files, err = filepath.Glob("../mjlogs/" + id + "/*.mjlog")
+	}
 	if err != nil {
 		log.Fatal(err)
 	}

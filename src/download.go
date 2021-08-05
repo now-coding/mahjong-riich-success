@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+
+	"github.com/now-coding/mahjong-riich-success/domain"
 )
 
 func main() {
@@ -30,10 +32,10 @@ func byAll() {
 
 	for _, file := range files {
 		html := getLogsHTML(file)
-		ids := getMJLogIDs(html)
+		logs := getMJLogs(html)
 
-		for _, id := range ids {
-			downloadMJLog(id, "")
+		for _, l := range logs {
+			downloadMJLog(l, "")
 			time.Sleep(time.Millisecond * 500)
 		}
 	}
@@ -41,20 +43,20 @@ func byAll() {
 
 func byPlayerID(playerID string) {
 	html := getLogsHTMLByPlayerID(playerID)
-	ids := getMJLogIDs(html)
+	logs := getMJLogs(html)
 
-	for _, id := range ids {
-		downloadMJLog(id, playerID)
+	for _, l := range logs {
+		downloadMJLog(l, playerID)
 		time.Sleep(time.Millisecond * 500)
 	}
 }
 
-func downloadMJLog(id string, playerID string) {
+func downloadMJLog(mjLog domain.MJLog, playerID string) {
 	var file string
 	if playerID == "" {
-		file = "../mjlogs/" + id + ".mjlog"
+		file = "../mjlogs/" + mjLog.ID + ".mjlog"
 	} else {
-		file = "../mjlogs/" + playerID + "/" + id + ".mjlog"
+		file = "../mjlogs/" + playerID + "/" + mjLog.ID + "&tw=" + mjLog.MyPosition + ".mjlog"
 		os.MkdirAll(filepath.Dir(file), 0755)
 	}
 
@@ -64,7 +66,7 @@ func downloadMJLog(id string, playerID string) {
 		return
 	}
 
-	url := "https://tenhou.net/0/log/?" + id
+	url := "https://tenhou.net/0/log/?" + mjLog.ID
 	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -83,21 +85,24 @@ func downloadMJLog(id string, playerID string) {
 	log.Printf("%s is downloaded", file)
 }
 
-func getMJLogIDs(html *goquery.Document) []string {
-	ids := []string{}
+func getMJLogs(html *goquery.Document) []domain.MJLog {
+	logs := []domain.MJLog{}
 
 	html.Find("a").Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
 		if exists {
-			r := regexp.MustCompile(`log=([\w\-]+)`)
+			r := regexp.MustCompile(`log=([\w\-]+)(&tw=([\d]))?`)
 			matches := r.FindStringSubmatch(href)
 			if len(matches) > 0 {
-				ids = append(ids, matches[1])
+				logs = append(logs, domain.MJLog{
+					ID:         matches[1],
+					MyPosition: matches[3],
+				})
 			}
 		}
 	})
 
-	return ids
+	return logs
 }
 
 func getLogsHTML(file string) *goquery.Document {
