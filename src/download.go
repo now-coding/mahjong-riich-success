@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/thoas/go-funk"
 
 	"github.com/now-coding/mahjong-riich-success/domain"
 )
@@ -102,7 +103,7 @@ func getMJLogs(html *goquery.Document) []domain.MJLog {
 		}
 	})
 
-	return logs
+	return funk.Reverse(logs).([]domain.MJLog)
 }
 
 func getLogsHTML(file string) *goquery.Document {
@@ -156,5 +157,5 @@ func getLogFiles() []string {
 		files = append(files, matches[0])
 	}
 
-	return files
+	return funk.Reverse(files).([]string)
 }

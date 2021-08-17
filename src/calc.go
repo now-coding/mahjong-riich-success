@@ -25,16 +25,19 @@ func main() {
 	id := flag.Arg(0)
 
 	files := getFiles(id)
+	gamesCount := 0
 	riichCount := 0
 	riichSuccessCount := 0
 
 	for _, file := range files {
 		log := getLog(file)
 
+		gamesCount += 1
 		riichCount += log.GetRiichCount()
 		riichSuccessCount += log.GetRiichSuccessCount()
 	}
 
+	fmt.Printf("ゲーム数: %d\n", gamesCount)
 	fmt.Printf("リーチ回数: %d\n", riichCount)
 	fmt.Printf("リーチ成功回数: %d\n", riichSuccessCount)
 	fmt.Printf("リーチ成功率: %.2f\n", float64(riichSuccessCount)/float64(riichCount)*100)
