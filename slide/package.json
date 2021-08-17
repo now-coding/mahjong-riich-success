@@ -1,4 +1,5 @@
 {
+  "name": "slide",
   "private": true,
   "scripts": {
     "dev": "slidev --open",
@@ -10,5 +11,7 @@
     "@slidev/theme-default": "*",
     "@slidev/theme-seriph": "*"
   },
-  "name": "mahjong-riich-success"
+  "devDependencies": {
+    "playwright-chromium": "^1.13.1"
+  }
 }
