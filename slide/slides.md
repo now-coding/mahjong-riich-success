@@ -15,6 +15,14 @@ class: text-white bg-warm-gray-900
       margin-bottom: 10px;
     }
 
+    h1 + p + h2 {
+      margin-top: 1rem;
+    }
+
+    img + h2 {
+      margin-top: 1rem;
+    }
+
     pre.slidev-code {
       @apply bg-warm-gray-700;
 
@@ -159,21 +167,13 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> あと一つであがりだよ！という宣言
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 麻雀では、宣言しても、しなくてもいい
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 麻雀では、宣言しても、しなくてもいい
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 宣言すると、得点が上がる
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 宣言すると、得点が上がる
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 現代麻雀では、リーチは最強の役
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 現代麻雀では、リーチは最強の役
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> その成功率を調べたい！
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> その成功率を調べたい！
 
 ---
 layout: image-right
@@ -187,25 +187,17 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> さとしのすけはとにかく麻雀が弱い
 
-<div v-click class="">
+<div>
   <img src="images/ranking.png" class="w-70 fixed top-10 right-25" />
 </div>
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> えげつないほど負けまくっている
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> えげつないほど負けまくっている
 
-<p v-click>
-  <uil-question-circle class="inline-block align-middle text-warm-gray-500" /> どうしてこんなに負けているのか？
-</p>
+<uil-question-circle class="inline-block align-middle text-warm-gray-500" /> どうしてこんなに負けているのか？
 
-<p v-click>
-  <uil-exclamation-circle class="inline-block align-middle text-warm-gray-500" /> リーチ成功率が低い気がする
-</p>
+<uil-exclamation-circle class="inline-block align-middle text-warm-gray-500" /> リーチ成功率が低い気がする
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> ならば調べてみよう！
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> ならば調べてみよう！
 
 ---
 layout: image-right
@@ -219,22 +211,16 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> オンライン麻雀ゲーム「[天鳳](https://tenhou.net/) 」を利用
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 天鳳では牌譜をダウンロード可能
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 天鳳では牌譜をダウンロード可能
 
-<p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 牌譜を解析して、リーチ成功率を調査
-</p>
+<uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 牌譜を解析して、リーチ成功率を調査
 
-<div class="mt-10" v-click>
-  <h2><uil-calculator class="inline-block" /> 計算方法</h2>
+<h2><uil-calculator class="inline-block" /> 計算方法</h2>
 
-  <div class="text-2xl font-bold text-center">
-    リーチ成功回数 / リーチ回数<br />
-    <span class="write-vertical-right">=</span><br />
-    リーチ成功率
-  </div>
+<div class="text-2xl font-bold text-center">
+  リーチ成功回数 / リーチ回数<br />
+  <span class="write-vertical-right">=</span><br />
+  リーチ成功率
 </div>
 
 ---
@@ -247,21 +233,71 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 用意したもの
 
-<div>
-  <h2><uil-file-alt class="inline-block" /> 牌譜ダウンローダー</h2>
+## <uil-file-alt class="inline-block" /> 牌譜ダウンローダー
 
-  * 手動で一つ一つダウンロードするのは大変
-  * 全ての牌譜をダウンロードする
-  * 不要な負荷をかけないように配慮
-  * ID指定でダウンロードできるように
+* 手動で一つ一つダウンロードするのは大変
+* 全ての牌譜をダウンロードする
+* 不要な負荷をかけないように配慮
+* ID指定でダウンロードできるように
+
+## <uil-file-alt class="inline-block" /> リーチカウンター
+
+* ダウンロードした牌譜を解析
+* リーチ回数と、リーチ成功回数を集計する
+* ID指定で集計できるように
+
+---
+layout: cover
+background: ./images/background1.jpg
+---
+
+<h1 class="text-center">
+  <uim-check-circle class="inline-block align-bottom text-warm-gray-50" />
+  仮説
+</h1>
+
+<div class="text-center text-5xl p-5 leading-normal">
+  リーチ成功率を仮説してみる
 </div>
 
-<div class="mt-10" v-click>
-  <h2><uil-file-alt class="inline-block" /> リーチカウンター</h2>
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
 
-  * ダウンロードした牌譜を解析
-  * リーチ回数と、リーチ成功回数を集計する
-  * ID指定で集計できるように
+# <uil-bolt class="inline-block align-bottom" /> 前提
+
+ざっくりと要素を確認
+
+## <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 麻雀牌の種類: 全34種
+
+<img src="images/pai.png" class="" />
+
+## <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 麻雀牌の総数
+
+<div class="text-center mb-5 mt-5 text-3xl font-bold">
+  34種類 ×  各4枚
+  =
+  136枚
+</div>
+
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-bolt class="inline-block align-bottom" /> 前提
+
+ざっくりと要素を確認
+
+## <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 待ちの種類
+
+<img src="images/machi.png" class="" />
+
+<div class="text-center mb-5 mt-5 text-3xl font-bold">
+  リャンメンを想定
 </div>
 
 ---
@@ -326,7 +362,7 @@ class: text-warm-gray-700 bg-warm-gray-100
       display: none;
     }
     td {
-      padding: 10px;
+      padding: 7px 10px;
     }
   }
 }
