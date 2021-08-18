@@ -14,6 +14,14 @@ class: text-white bg-warm-gray-900
       font-weight: 500;
       margin-bottom: 10px;
     }
+
+    pre.slidev-code {
+      @apply bg-warm-gray-700;
+
+      .line {
+        @apply text-warm-gray-100;
+      }
+    }
   }
 </style>
 
@@ -216,7 +224,7 @@ class: text-warm-gray-700 bg-warm-gray-100
 </p>
 
 <p v-click>
-  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 牌譜を解析して、リーチの成功率を調査
+  <uil-check-circle class="inline-block align-middle text-warm-gray-500" /> 牌譜を解析して、リーチ成功率を調査
 </p>
 
 <div class="mt-10" v-click>
@@ -271,3 +279,82 @@ class: text-warm-gray-700 bg-warm-gray-100
 ---
 
 # <uil-laptop class="inline-block align-bottom" /> 集計実行
+
+## <uil-calculator class="inline-block" /> 全体集計
+
+<div v-click>
+
+```bash
+$ go run calc.go
+ゲーム数: 13473
+リーチ回数: 89961
+リーチ成功回数: 44469
+リーチ成功率: 49.43
+```
+
+</div>
+
+<div v-click class="mt-10">
+
+## <uil-calculator class="inline-block" /> さとしのすけ集計
+
+</div>
+
+<div v-click>
+
+```bash
+$ go run calc.go IDXXXXXXXX-XXXXXXXX
+ゲーム数: 117
+リーチ回数: 88
+リーチ成功回数: 52
+リーチ成功率: 59.09
+```
+
+</div>
+
+---
+layout: image-right
+image: ./images/background3.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+<style>
+.slidev-page-12 {
+  table {
+    @apply text-xs;
+    thead {
+      display: none;
+    }
+    td {
+      padding: 10px;
+    }
+  }
+}
+</style>
+
+# <uil-laptop class="inline-block align-bottom" /> 集計実行
+
+## <uil-calculator class="inline-block" /> 全体集計
+
+| | |
+| - | - |
+| ゲーム数 | 13473 |
+| リーチ回数 | 89961 |
+| リーチ成功回数 | 44469 |
+
+<div class="text-center mb-5 mt-2 text-3xl font-bold">
+  49.43%
+</div>
+
+## <uil-calculator class="inline-block" /> さとしのすけ集計
+
+| | |
+| - | - |
+| ゲーム数 | 117 |
+| リーチ回数 | 88 |
+| リーチ成功回数 | 52 |
+
+<div class="text-center mb-5 mt-2 text-3xl font-bold">
+  59.09%
+</div>
+
