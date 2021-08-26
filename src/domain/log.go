@@ -34,8 +34,11 @@ func (m MJLog) GetRiichCount() int {
 }
 
 func (m MJLog) GetRiichSuccessCount() int {
-	count := 0
+	tsumo, ron := m.GetRiichSuccessCounts()
+	return tsumo + ron
+}
 
+func (m MJLog) GetRiichSuccessCounts() (tsumo int, ron int) {
 	r := regexp.MustCompile(`<AGARI.*?/>`)
 	agaries := r.FindAllString(m.Body, -1)
 	for _, agari := range agaries {
@@ -47,17 +50,31 @@ func (m MJLog) GetRiichSuccessCount() int {
 		r := regexp.MustCompile(`yaku="([\d,]+)"`)
 		matches := r.FindStringSubmatch(agari)
 		if len(matches) > 0 {
+			var isTsumo bool
+			var isRiich bool
+
 			// [役A,役Aの飜数,役B,役Bの飜数,...]
 			for i, yaku := range strings.Split(matches[1], ",") {
+				if i%2 == 0 && yaku == YAKU_TSUMO {
+					isTsumo = true
+				}
 				if i%2 == 0 && yaku == YAKU_RIICH {
-					count += 1
+					isRiich = true
 				}
 				if i%2 == 0 && yaku == YAKU_W_RIICH {
-					count += 1
+					isRiich = true
+				}
+			}
+
+			if isRiich {
+				if isTsumo {
+					tsumo += 1
+				} else {
+					ron += 1
 				}
 			}
 		}
 	}
 
-	return count
+	return
 }

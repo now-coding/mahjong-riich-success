@@ -20,27 +20,48 @@ const (
 	GAME_TYPE_THREE = 0x0010
 )
 
+var (
+	verbose bool
+)
+
 func main() {
+	flag.BoolVar(&verbose, "v", false, "verbose tsumo or ron")
 	flag.Parse()
 	id := flag.Arg(0)
 
 	files := getFiles(id)
 	gamesCount := 0
 	riichCount := 0
-	riichSuccessCount := 0
+	riichTsumoSuccessCount := 0
+	riichRonSuccessCount := 0
 
 	for _, file := range files {
 		log := getLog(file)
 
 		gamesCount += 1
 		riichCount += log.GetRiichCount()
-		riichSuccessCount += log.GetRiichSuccessCount()
+
+		tsumo, ron := log.GetRiichSuccessCounts()
+		riichTsumoSuccessCount += tsumo
+		riichRonSuccessCount += ron
 	}
 
+	riichSuccessCount := riichTsumoSuccessCount + riichRonSuccessCount
 	fmt.Printf("ゲーム数: %d\n", gamesCount)
 	fmt.Printf("リーチ回数: %d\n", riichCount)
-	fmt.Printf("リーチ成功回数: %d\n", riichSuccessCount)
-	fmt.Printf("リーチ成功率: %.2f\n", float64(riichSuccessCount)/float64(riichCount)*100)
+
+	if verbose {
+		fmt.Printf("リーチ成功回数: %d (T:%d, R:%d)\n", riichSuccessCount, riichTsumoSuccessCount, riichRonSuccessCount)
+		fmt.Printf(
+			"リーチ成功率: %.2f (T:%.2f, R:%.2f)\n",
+			float64(riichSuccessCount)/float64(riichCount)*100,
+			float64(riichTsumoSuccessCount)/float64(riichCount)*100,
+			float64(riichRonSuccessCount)/float64(riichCount)*100,
+		)
+	} else {
+		fmt.Printf("リーチ成功回数: %d\n", riichSuccessCount)
+		fmt.Printf("リーチ成功率: %.2f\n", float64(riichSuccessCount)/float64(riichCount)*100)
+	}
 }
 
 func getLog(file string) domain.MJLog {
