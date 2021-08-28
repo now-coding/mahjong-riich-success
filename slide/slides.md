@@ -61,6 +61,7 @@ class: text-white bg-warm-gray-900
 
 ---
 layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
 class: text-warm-gray-700 bg-warm-gray-100
 ---
 
@@ -139,6 +140,7 @@ aaaaa
 
 ---
 layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
 class: text-warm-gray-700 bg-warm-gray-100
 ---
 
@@ -147,10 +149,10 @@ class: text-warm-gray-700 bg-warm-gray-100
 チャンネル紹介
 
 プログラミングを通して、  
-「検証したり」「遊んだり」「作ったり」  
+「検証したり」「作ったり」「遊んだり」  
 するチャンネルです。
 
-プログラミング解説もするよ！
+コードの解説もするよ！
 
 <div class="text-center mt-15">
   <img src="images/logo.svg" class="w-50 inline-block" />
@@ -321,7 +323,7 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 自摸できる確率を予測
 
-## <uil-check-circle class="inline-block text-warm-gray-500" /> 山牌内の待牌の割合
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 待牌の割合
 
 ```go
 リャンメン(2種*4枚=8枚) = 8 / 136 = 0.058...
@@ -331,13 +333,39 @@ class: text-warm-gray-700 bg-warm-gray-100
 タンキ(1種*3枚=3枚) = 3 / 136 = 0.022...
 ```
 
-## <uil-check-circle class="inline-block text-warm-gray-500" /> 牌数から待牌の数(期待値)を導ける
+<div class="text-center mb-5 mt-5 text-xl font-bold">
+  <span class="write-vertical-right">=</span><br />
+  試行回数1回時の自摸確率<br />
+</div>
 
-| 状況 | 残り牌数 | 待牌数(リャンメン) |
-| - | - | - |
-| 開始直後 | 70枚 | 約4枚 |
-| 中盤 | 35枚 | 約2枚 |
-| 終盤 | 15枚 | 約1枚 |
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 濃度という考え方
+
+どんな状況下でも、「濃度は一定」であることを期待する。
+
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-bolt class="inline-block" /> 仮説を立てる
+
+自摸できる確率を予測
+
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 自摸できる確率
+
+### リャンメンの場合(約6%、自摸残り12回)
+
+<div class="text-center mb-5 mt-5 text-3xl font-bold">
+  6% + 6% + 6% ... = 72%
+</div>
+
+<img src="images/dame.png" class="w-30 m-auto" />
+
+<div class="text-center mt-5 text-xl font-bold">
+  足し算で考えるのは間違っている<br />
+  (繰り返せば必ず100%を超えてしまう)
+</div>
 
 ---
 layout: image-right
@@ -357,19 +385,17 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 ## <uil-check-circle class="inline-block text-warm-gray-500" /> 自摸できない確率
 
+「n回連続自摸れない確率」で考えればいい。<br />
+
 <p class="text-warm-gray-500 text-xs">
-  「待ち牌以外を引く確率」を自摸数分だけ累乗すればいい。<br />
-  牌山の多寡に関わらず「期待する牌が存在する確率」は一定のはず。<br />
-</p>
-<p class="text-warm-gray-500 text-xs">
-  a = 待ち牌数(最大数)<br />
-  n = 残り自摸数<br />
+  a = 待ち牌枚数<br />
+  n = 残り自摸回数<br />
 </p>
 
-<div class="text-center mb-5 mt-5 text-xl font-bold">
+<div class="text-center mt-5 text-3xl font-bold">
 
   $$
-    (1 - (\frac{a}{136}))^n
+    (1 - \frac{a}{136})^n
   $$
 
 </div>
@@ -384,9 +410,17 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 自摸できる確率を予測
 
-## <uil-check-circle class="inline-block text-warm-gray-500" /> 自摸できる確率表: 全平均 <span class="text-blue-gray-400">約31%</span>
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 自摸できる確率
+
+<div class="text-center mt-1 mb-1 text-xl font-bold">
+  全平均 <span class="text-blue-gray-400">約31%</span>
+</div>
 
 <img src="images/table.png" />
+
+<!--
+ボリュームゾーンのみで平均値を出すと、38%ほどになる
+-->
 
 ---
 layout: image-right
@@ -396,24 +430,111 @@ class: text-warm-gray-700 bg-warm-gray-100
 
 # <uil-bolt class="inline-block" /> 仮説を立てる
 
-トータルの成功率を予測
+トータルでの成功率を予測
 
 ## <uil-check-circle class="inline-block text-warm-gray-500" /> 麻雀は4人で競うゲーム
 
+* そもそも4人に1人しか上がれない
 * 他プレイヤーが降りてしまう
 * 他プレイヤーが押してくる
 * 他プレイヤーが上がってしまう
 * 他プレイヤーの手詰まり
 
+<div class="text-center text-xl font-bold mt-5">
+  厳密に確率計算に落とし込むのは<br />
+  なかなか難しい
+</div>
+
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-bolt class="inline-block" /> 仮説を立てる
+
+トータルでの成功率を予測
+
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 簡略化して想定してみる
+
+### リーチした時
+
+* 1人は押し返してくる
+* 他2人はベタ降り
+
+<div class="text-center text-xl font-bold mt-5">
+  他のプレイヤーの押し返し<br />
+  <span class="write-vertical-right">=</span><br />
+  試行回数が増えただけ<br />
+  <span class="write-vertical-right">=</span><br />
+  ツモ・ロンの確率は <strong>50:50</strong><br />
+</div>
+
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-bolt class="inline-block" /> 仮説を立てる
+
+トータルでの成功率を予測
+
+## <uil-check-circle class="inline-block text-warm-gray-500" /> 簡略化して想定してみる
+
+### リーチした時
+
+* 1人は押し返してくる
+* 他2人はベタ降り
+
+<div class="text-center text-xl font-bold mt-5">
+  他のプレイヤーの上がり<br />
+  <span class="write-vertical-right">=</span><br />
+  自分が上がれなかっただけ<br />
+  <span class="write-vertical-right">=</span><br />
+  次の試行を開始すればいい
+</div>
+
+---
+layout: image-right
+image: ./images/background4.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-bolt class="inline-block" /> 仮説を立てる
+
+トータルでの成功率を予測
+
 ## <uil-check-circle class="inline-block text-warm-gray-500" /> さとしのすけの予測
 
-<div class="text-center text-xl font-bold">
+### リーチした時
+
+* 1人は押し返してくる
+* 他2人はベタ降り
+* ゲーム中盤でのリーチがボリュームゾーン
+
+<div class="text-center text-3xl font-bold mt-5">
   <div class="text-base mb-5">
-    自分都合: 31%<br />
-    他都合: +10%(勘)<br />
+    試行回数: 平均約18回<br />
   </div>
 
-  リーチ成功率 = 40%
+  リーチ成功率 = 約48%
+</div>
+
+<img src="images/table.png" class="fixed w-100 top-25 right-10" />
+
+---
+layout: cover
+background: ./images/background1.jpg
+---
+
+<h1 class="text-center">
+  <uim-check-circle class="inline-block text-warm-gray-50" />
+  検証
+</h1>
+
+<div class="text-center text-5xl p-5 leading-normal">
+  天鳳牌譜を集計してみる
 </div>
 
 ---
@@ -422,7 +543,19 @@ image: ./images/background3.jpg
 class: text-warm-gray-700 bg-warm-gray-100
 ---
 
-# <uil-laptop class="inline-block align-bottom" /> ダウンロード実行
+# <uil-laptop class="inline-block" /> ダウンロード実行
+
+## <uil-calculator class="inline-block" /> 全体ログダウンロード
+
+```bash
+$ go run donwload.go
+```
+
+## <uil-calculator class="inline-block" /> 個人ログダウンロード
+
+```bash
+$ go run donwload.go IDXXXXXXXX-XXXXXXXX
+```
 
 ---
 layout: image-right
@@ -430,26 +563,18 @@ image: ./images/background3.jpg
 class: text-warm-gray-700 bg-warm-gray-100
 ---
 
-# <uil-laptop class="inline-block align-bottom" /> 集計実行
+# <uil-laptop class="inline-block" /> 集計実行
 
 ## <uil-calculator class="inline-block" /> 全体集計
 
 ```bash
 $ go run calc.go
-ゲーム数: 13473
-リーチ回数: 89961
-リーチ成功回数: 44469
-リーチ成功率: 49.43
 ```
 
 ## <uil-calculator class="inline-block" /> さとしのすけ集計
 
 ```bash
 $ go run calc.go IDXXXXXXXX-XXXXXXXX
-ゲーム数: 117
-リーチ回数: 88
-リーチ成功回数: 52
-リーチ成功率: 59.09
 ```
 
 ---
@@ -459,7 +584,7 @@ class: text-warm-gray-700 bg-warm-gray-100
 ---
 
 <style>
-.slidev-page-12 {
+.slidev-page-24 {
   table {
     @apply text-xs;
     thead {
@@ -472,7 +597,7 @@ class: text-warm-gray-700 bg-warm-gray-100
 }
 </style>
 
-# <uil-laptop class="inline-block align-bottom" /> 集計実行
+# <uil-laptop class="inline-block" /> 集計結果
 
 ## <uil-calculator class="inline-block" /> 全体集計
 
@@ -498,3 +623,48 @@ class: text-warm-gray-700 bg-warm-gray-100
   59.09%
 </div>
 
+---
+layout: cover
+background: ./images/background1.jpg
+---
+
+<h1 class="text-center">
+  <uim-check-circle class="inline-block text-warm-gray-50" />
+  結論
+</h1>
+
+---
+layout: image-right
+image: ./images/background2.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-check-circle class="inline-block" /> 結論
+
+## <uil-question-circle class="inline-block" /> 推測
+
+さとしのすけが麻雀が弱いのは、リーチ成功率が低いからでは？
+
+## <uil-check-circle class="inline-block" /> 結果
+
+* 全体集計: 49.43%
+* さとしのすけ集計: 59.09%
+
+---
+layout: image-right
+image: ./images/background2.jpg
+class: text-warm-gray-700 bg-warm-gray-100
+---
+
+# <uil-check-circle class="inline-block" /> 結論
+
+## <uil-question-circle class="inline-block" /> 推測
+
+さとしのすけが麻雀が弱いのは、リーチ成功率が低いからでは？
+
+## <uil-exclamation-circle class="inline-block" /> 結論
+
+<div class="text-center text-3xl p-5 leading-normal">
+  さとしのすけが弱いのは<br />
+  リーチ成功率とは無関係
+</div>
